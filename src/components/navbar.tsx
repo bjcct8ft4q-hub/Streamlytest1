@@ -85,7 +85,7 @@ const NavBar = () => {
           : "bg-black/90 border-white/5",
       ])}
     >
-      <Container className="!max-w-none flex items-center gap-4 py-3 !px-6">
+      <Container className="!max-w-none flex items-center gap-3 py-3 !px-6">
         <Link
           href={ROUTES.HOME}
           className="flex shrink-0 items-center gap-1 cursor-pointer"
@@ -101,14 +101,14 @@ const NavBar = () => {
           </h1>
         </Link>
 
-        <div className="hidden lg:flex items-center gap-10 ml-20">
+        <div className="hidden lg:flex items-center gap-10">
           {menuItems.map((menu, idx) => (
             <Link href={menu.href || "#"} key={idx}>
               {menu.title}
             </Link>
           ))}
         </div>
-        <div className="ml-2 flex-1 hidden lg:flex items-center gap-5">
+        <div className="flex-1 hidden lg:flex items-center gap-5">
           <SearchBar className="!max-w-[250px]" />
           <div className="ml-auto" />
           {auth.auth ? <NavbarAvatar auth={auth} /> : <LoginPopoverButton />}
