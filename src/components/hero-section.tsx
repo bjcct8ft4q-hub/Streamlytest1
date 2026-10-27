@@ -30,7 +30,7 @@ const HeroSection = (props: IHeroSectionProps) => {
     return <LoadingSkeleton />;
 
   return (
-    <div className="h-[80vh] w-full relative">
+    <div className="h-[420px] md:h-[390px] w-full relative">
       <Carousel className="w-full" setApi={setApi} opts={{ loop: true }}>
         <CarouselContent>
           {props.spotlightAnime.map((anime, index) => (
@@ -71,24 +71,24 @@ const HeroCarouselItem = ({ anime }: { anime: MediaList }) => {
 
   return (
     <div
-      className="w-full bg-cover bg-no-repeat bg-center h-[80vh] relative"
+      className="w-full bg-cover bg-no-repeat bg-center h-[420px] md:h-[390px] relative"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Gradient Overlay */}
-      <div className="absolute h-full w-full inset-0 m-auto bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent z-10"></div>
-      <div className="absolute h-full w-full inset-0 m-auto bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent z-10"></div>
+      <div className="absolute h-full w-full inset-0 m-auto bg-gradient-to-r from-black via-black/85 to-transparent z-10"></div>
+      <div className="absolute h-full w-full inset-0 m-auto bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
 
       {/* Content Section */}
       <div className="w-full h-[calc(100%-5.25rem)] relative z-20">
         <Container className="w-full h-full flex flex-col justify-end md:justify-center pb-10">
-          <div className="space-y-3 lg:w-[45vw]">
-            <h1 className="text-3xl md:text-5xl font-black text-white line-clamp-2">
+          <div className="space-y-4 lg:w-[44vw]">
+            <h1 className="text-3xl md:text-4xl font-black text-white line-clamp-2">
               {title}
             </h1>
 
             <div className="flex flex-wrap items-center gap-2 text-xs">
               {anime.format && (
-                <Badge className="bg-[#e9376b] text-white font-bold">
+                <Badge className="bg-[#ff850b] text-white font-bold">
                   {anime.format}
                 </Badge>
               )}
@@ -112,9 +112,9 @@ const HeroCarouselItem = ({ anime }: { anime: MediaList }) => {
             <div className="flex items-center gap-5 !mt-6">
               <ButtonLink
                 href={`${ROUTES.ANIME_DETAILS}/${anime.id}`}
-                className="h-10 text-md bg-[#e9376b] text-white hover:bg-[#e9376b]"
+                className="h-10 text-md bg-[#ff850b] text-white hover:bg-[#ff850b]"
               >
-                Learn More
+                Watch now
               </ButtonLink>
             </div>
           </div>
@@ -126,7 +126,7 @@ const HeroCarouselItem = ({ anime }: { anime: MediaList }) => {
 
 const LoadingSkeleton = () => {
   return (
-    <div className="h-[80vh] w-full relative">
+    <div className="h-[420px] md:h-[390px] w-full relative">
       <div className="w-full h-[calc(100%-5.25rem)] mt-[5.25rem] relative z-20">
         <Container className="w-full h-full flex flex-col justify-end md:justify-center pb-10">
           <div className="space-y-2 lg:w-[40vw]">
