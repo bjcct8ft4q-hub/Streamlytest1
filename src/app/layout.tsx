@@ -22,9 +22,9 @@ const geistSans = localFont({
 //   weight: "100 900",
 // });
 
-const APP_NAME = "Kitsune";
-const APP_DEFAULT_TITLE = "Kitsune | Anime Streaming";
-const APP_DESCRIPTION = "Stream your favourite anime with ease and no ads";
+const APP_NAME = "Streamly";
+const APP_DEFAULT_TITLE = "Streamly | Watch Anime";
+const APP_DESCRIPTION = "Explore anime, episodes and your watchlist on Streamly";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -60,18 +60,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-X9RZ58XPH1"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-X9RZ58XPH1');`}
-        </Script>
         <link rel="icon" href="/icon.png" type="image/png" sizes="192x192" />
       </head>
       <body
