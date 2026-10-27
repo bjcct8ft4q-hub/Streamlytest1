@@ -81,35 +81,36 @@ const NavBar = () => {
         "fixed top-0 left-0 right-0 h-fit w-full z-[100] transition-all duration-300",
         "backdrop-blur-xl backdrop-saturate-150 border-b",
         isHeaderSticky
-          ? "bg-slate-950/65 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
-          : "bg-slate-950/35 border-white/5",
+          ? "bg-black/95 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
+          : "bg-black/90 border-white/5",
       ])}
     >
-      <Container className="flex items-center justify-between py-2 gap-20 ">
+      <Container className="!max-w-none flex items-center gap-3 py-3 !px-6">
         <Link
           href={ROUTES.HOME}
-          className="flex items-center gap-1 cursor-pointer"
+          className="flex shrink-0 items-center gap-1 cursor-pointer"
         >
-          <Image src="/icon.png" alt="logo" width={70} height={70} />
+          <span aria-hidden="true" className="flex h-8 w-9 items-center justify-center text-3xl font-bold text-orange-500">∞</span>
           <h1
             className={cn([
-              nightTokyo.className,
-              "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-pink-600 tracking-widest",
+              
+              "text-xl font-black italic text-white tracking-tight",
             ])}
           >
-            Kitsunee
+            Streamly
           </h1>
         </Link>
 
-        <div className="hidden lg:flex items-center gap-10 ml-20">
+        <div className="hidden lg:flex items-center gap-10">
           {menuItems.map((menu, idx) => (
             <Link href={menu.href || "#"} key={idx}>
               {menu.title}
             </Link>
           ))}
         </div>
-        <div className="w-1/3 hidden lg:flex items-center gap-5">
-          <SearchBar />
+        <div className="flex-1 hidden lg:flex items-center gap-5">
+          <SearchBar className="!max-w-[250px]" />
+          <div className="ml-auto" />
           {auth.auth ? <NavbarAvatar auth={auth} /> : <LoginPopoverButton />}
         </div>
         <div className="lg:hidden flex items-center gap-5">
