@@ -55,12 +55,13 @@ export default function Home() {
   );
 
   return (
-    <div className="flex flex-col bg-[#121212]">
+    <div className="flex flex-col min-h-screen bg-[#10101b] text-white">
       <HeroSection
         spotlightAnime={spotlightList}
         isDataLoading={isLoadingSpotlight}
       />
 
+      <div className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8"><div className="mb-7 border-b border-violet-400/15 pb-5"><p className="mb-1 text-xs font-bold uppercase tracking-widest text-violet-400">Discover your next favourite</p><h2 className="text-2xl font-black tracking-tight sm:text-3xl">Explore Anime on Streamly</h2><p className="mt-2 text-sm text-slate-400">Latest episodes, trending series and anime worth watching.</p></div></div>
       <LatestEpisodesAnime loading={isLoadingRecent} />
 
       <ContinueWatching loading={false} />
@@ -84,7 +85,7 @@ export default function Home() {
       />
 
       <AnimeSections
-        title="Trending Anime"
+        title="Trending Now"
         animeList={trendingList}
         loading={isLoadingTrending}
         page={trendingPage}
@@ -97,7 +98,7 @@ export default function Home() {
       <AnimeSchedule />
 
       <AnimeSections
-        title="Upcoming Animes"
+        title="Coming Soon"
         animeList={upcomingList}
         loading={isLoadingUpcoming}
         page={upcomingPage}
