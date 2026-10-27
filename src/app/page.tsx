@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import AnimeCard from "@/components/anime-card";
+import Image from "next/image";
+import Link from "next/link";
 import { ROUTES } from "@/constants/routes";
 import { useGetSpotlightAnime } from "@/query/get-spotlight-anime";
 import { useGetRecentAnime } from "@/query/get-recent-anime";
@@ -24,7 +25,7 @@ export default function Home() {
   const { data: trendingRes, isLoading: loadingTrending } = useGetTrendingAnime(trendingPage, 14);
   const { data: upcomingRes, isLoading: loadingUpcoming } = useGetUpcomingAnime(upcomingPage, 14);
   const recent = recentRes?.results || [];
-  const latest = recent.filter((a) => filter === "all" || (filter === "movies" ? a.format === "MOVIE" : a.format !== "MOVIE"));
+  const latest = recent.filter((a) => (a.seasonYear === 2026 || !recent.some((x) => x.seasonYear === 2026)) && (filter === "all" || (filter === "movies" ? a.format === "MOVIE" : a.format !== "MOVIE")));
   const days = Array.from({ length: 7 }, (_, index) => {
     const date = new Date();
     date.setDate(date.getDate() + index);
@@ -50,7 +51,19 @@ export default function Home() {
             </div>
             {loadingRecent ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">{Array.from({length: 6}, (_, i) => <div key={i} className="aspect-[2/3] animate-pulse bg-zinc-900" />)}</div> :
             latest.length ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
-              {latest.slice(0, 18).map((anime) => <AnimeCard key={anime.id} title={anime.title?.english || anime.title?.romaji || anime.title?.native || "Untitled"} poster={anime.coverImage?.extraLarge || anime.coverImage?.large || ""} score={anime.averageScore} format={anime.format} episodes={anime.episodes || 1} episodeCard href={`${ROUTES.WATCH}?anime=${anime.id}&ep=${anime.episodes || 1}`} className="!h-auto !max-w-none !min-w-0 aspect-[2/3] !rounded-sm" />)}
+              {latest.slice(0, 18).map((anime) => (
+                <Link key={anime.id} href={`${ROUTES.ANIME_DETAILS}/${anime.id}`} className="group block min-w-0">
+                  <div className="relative aspect-[2/3] overflow-hidden bg-[#161616]">
+                    <Image unoptimized fill sizes="(max-width: 640px) 50vw, (max-width: 1280px) 25vw, 15vw" className="object-cover transition-transform duration-300 group-hover:scale-[1.04]" src={anime.coverImage?.extraLarge || anime.coverImage?.large || "/icon.png"} alt={anime.title?.english || anime.title?.romaji || "Anime poster"} />
+                    {anime.averageScore != null && <span className="absolute left-0 top-0 bg-[#22231f]/95 px-2 py-0.5 text-[11px] font-bold text-white"><span className="text-yellow-400">★</span> {(anime.averageScore / 10).toFixed(1)}</span>}
+                    <span className="absolute bottom-0 left-0 bg-black/80 px-2 py-1 text-[10px] font-bold text-white">EP {anime.episodes ?? 0}</span>
+                  </div>
+                  <div className="pt-2">
+                    <h3 className="line-clamp-2 text-[13px] font-semibold leading-5 text-white group-hover:text-orange-500"><span className="mr-1 text-orange-500">•</span>{anime.title?.english || anime.title?.romaji || anime.title?.native || "Untitled"}</h3>
+                    <p className="mt-0.5 text-xs text-zinc-500">{anime.format === "MOVIE" ? "Movie" : anime.format || "TV"}</p>
+                  </div>
+                </Link>
+              ))}
             </div> : <p className="py-8 text-sm text-zinc-400">No episodes available right now.</p>}
           </section>
           <aside className="space-y-5">
