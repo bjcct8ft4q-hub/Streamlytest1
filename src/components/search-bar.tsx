@@ -66,8 +66,8 @@ const SearchBar = ({
     <div ref={containerRef} className={cn(["relative w-full min-h-fit", className])}>
       <SearchIcon suppressHydrationWarning className="absolute inset-y-0 left-2 m-auto h-4 w-4" />
       <Input
-        className="w-full h-10 pl-8 text-white border-white"
-        placeholder="Enter your keywords to search..."
+        className="w-full h-9 pl-8 pr-3 text-white border-white/15 bg-black placeholder:text-zinc-500"
+        placeholder="Search series..."
         onChange={(e) => setSearchValue(e.target.value)}
         onFocus={() => setIsFocused(true)}
         value={searchValue}
