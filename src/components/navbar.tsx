@@ -90,14 +90,14 @@ const NavBar = () => {
           href={ROUTES.HOME}
           className="flex items-center gap-1 cursor-pointer"
         >
-          <Image src="/icon.png" alt="logo" width={70} height={70} />
+          <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-xl font-bold text-white">S</span>
           <h1
             className={cn([
-              nightTokyo.className,
-              "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-pink-600 tracking-widest",
+              
+              "text-2xl font-extrabold text-white tracking-tight",
             ])}
           >
-            Kitsunee
+            Streamly
           </h1>
         </Link>
 
