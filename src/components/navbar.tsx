@@ -81,8 +81,8 @@ const NavBar = () => {
         "fixed top-0 left-0 right-0 h-fit w-full z-[100] transition-all duration-300",
         "backdrop-blur-xl backdrop-saturate-150 border-b",
         isHeaderSticky
-          ? "bg-slate-950/65 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
-          : "bg-slate-950/35 border-white/5",
+          ? "bg-black/95 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
+          : "bg-black/90 border-white/5",
       ])}
     >
       <Container className="flex items-center justify-between py-2 gap-20 ">
@@ -90,7 +90,7 @@ const NavBar = () => {
           href={ROUTES.HOME}
           className="flex items-center gap-1 cursor-pointer"
         >
-          <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-xl font-bold text-white">S</span>
+          <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500 text-xl font-bold text-white">∞</span>
           <h1
             className={cn([
               
