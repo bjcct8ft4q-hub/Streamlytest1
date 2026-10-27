@@ -1,149 +1,69 @@
 "use client";
 
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from "./ui/carousel";
-
-import Container from "./container";
-import { Button } from "./ui/button";
-
 import React from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-
+import { ArrowLeft, ArrowRight, Play, Info, Star } from "lucide-react";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "./ui/carousel";
 import { ROUTES } from "@/constants/routes";
-import { ButtonLink } from "./common/button-link";
 import { MediaList } from "@/types/miruro-api";
-import { Badge } from "./ui/badge";
+import Link from "next/link";
 
-type IHeroSectionProps = {
-  spotlightAnime: MediaList[];
-  isDataLoading: boolean;
-};
+type Props = { spotlightAnime: MediaList[]; isDataLoading: boolean };
 
-const HeroSection = (props: IHeroSectionProps) => {
+export default function HeroSection({ spotlightAnime, isDataLoading }: Props) {
   const [api, setApi] = React.useState<CarouselApi>();
+  const [selected, setSelected] = React.useState(0);
+  React.useEffect(() => {
+    if (!api) return;
+    const update = () => setSelected(api.selectedScrollSnap());
+    update();
+    api.on("select", update);
+    return () => { api.off("select", update); };
+  }, [api]);
 
-  if (props.isDataLoading || !props.spotlightAnime?.length)
-    return <LoadingSkeleton />;
-
+  if (isDataLoading || !spotlightAnime?.length) {
+    return <div className="mx-4 mt-24 h-[380px] animate-pulse rounded-xl bg-zinc-900 sm:mx-6" aria-label="Loading featured anime" />;
+  }
   return (
-    <div className="h-[420px] md:h-[390px] w-full relative">
-      <Carousel className="w-full" setApi={setApi} opts={{ loop: true }}>
-        <CarouselContent>
-          {props.spotlightAnime.map((anime, index) => (
-            <CarouselItem key={anime.id || index}>
-              <HeroCarouselItem anime={anime} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-      <div className="absolute hidden md:flex items-center gap-5 right-10 3xl:bottom-10 bottom-24 z-50 isolate">
-        <Button
-          onClick={() => {
-            api?.scrollPrev();
-          }}
-          className="rounded-full bg-transparent border border-white h-10 w-10 hover:bg-slate-500"
-        >
-          <ArrowLeft className="text-white shrink-0" />
-        </Button>
-        <Button
-          onClick={() => api?.scrollNext()}
-          className="rounded-full bg-transparent border border-white h-10 w-10 hover:bg-slate-500"
-        >
-          <ArrowRight className="text-white shrink-0" />
-        </Button>
+    <section aria-label="Featured anime" className="px-4 pt-24 sm:px-6">
+      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0b0808]">
+        <Carousel setApi={setApi} opts={{ loop: true }}>
+          <CarouselContent className="ml-0">
+            {spotlightAnime.map((anime, index) => {
+              const title = anime.title?.english || anime.title?.romaji || anime.title?.native || "Untitled";
+              const art = anime.bannerImage || anime.coverImage?.extraLarge || anime.coverImage?.large;
+              return <CarouselItem key={anime.id || index} className="pl-0">
+                <div className="relative flex min-h-[380px] flex-col overflow-hidden md:h-[380px] md:flex-row">
+                  <div className="relative z-10 flex w-full flex-col justify-center gap-5 bg-[#0d0808] px-6 py-12 md:w-[45%] md:px-10">
+                    <div className="flex items-center gap-2 text-xs text-slate-300">
+                      {anime.format && <span className="rounded-full border border-white/15 px-3 py-1">{anime.format}</span>}
+                      {anime.seasonYear && <span className="rounded-full border border-white/15 px-3 py-1">{anime.seasonYear}</span>}
+                      {!!anime.averageScore && <span className="flex items-center gap-1 rounded-full border border-white/15 px-3 py-1"><Star size={12} className="fill-orange-500 text-orange-500" />{(anime.averageScore / 10).toFixed(1)}</span>}
+                    </div>
+                    <h1 className="line-clamp-2 text-3xl font-black tracking-tight text-white sm:text-4xl">{title}</h1>
+                    <p className="line-clamp-3 max-w-xl text-sm leading-6 text-slate-400">{anime.genres?.join(" · ") || "Discover this series on Streamly."}</p>
+                    <div className="flex flex-wrap gap-3">
+                      <Link href={`${ROUTES.ANIME_DETAILS}/${anime.id}`} className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-5 py-3 text-sm font-bold text-black hover:bg-orange-400"><Play size={15} fill="currentColor" /> Watch now</Link>
+                      <Link href={`${ROUTES.ANIME_DETAILS}/${anime.id}`} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black px-5 py-3 text-sm font-bold text-white hover:bg-zinc-900"><Info size={15} /> View details</Link>
+                    </div>
+                  </div>
+                  <div className="relative min-h-[220px] flex-1 bg-zinc-900 md:min-h-0">
+                    {art && <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${art}")` }} />}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0d0808]/40 to-transparent md:from-[#0d0808]/20" />
+                    <span className="absolute bottom-4 right-4 rounded-full bg-black/70 px-3 py-2 text-xs font-semibold text-white">Discover on Streamly</span>
+                  </div>
+                </div>
+              </CarouselItem>;
+            })}
+          </CarouselContent>
+        </Carousel>
+        <div className="absolute right-4 top-4 z-20 flex gap-2">
+          <button type="button" aria-label="Previous featured anime" onClick={() => api?.scrollPrev()} className="rounded bg-black/70 p-2 text-white hover:bg-black"><ArrowLeft size={18}/></button>
+          <button type="button" aria-label="Next featured anime" onClick={() => api?.scrollNext()} className="rounded bg-black/70 p-2 text-white hover:bg-black"><ArrowRight size={18}/></button>
+        </div>
       </div>
-    </div>
+      <div className="mt-4 flex justify-end gap-2" aria-label="Featured anime slides">
+        {spotlightAnime.map((anime, index) => <button key={anime.id || index} type="button" aria-label={`Show featured anime ${index + 1}`} aria-current={selected === index ? "true" : undefined} onClick={() => api?.scrollTo(index)} className={`h-1 rounded-full transition-all ${selected === index ? "w-6 bg-orange-500" : "w-2 bg-zinc-600 hover:bg-zinc-400"}`} />)}
+      </div>
+    </section>
   );
-};
-
-const HeroCarouselItem = ({ anime }: { anime: MediaList }) => {
-  const bgImage =
-    anime.bannerImage ||
-    anime.coverImage?.extraLarge ||
-    anime.coverImage?.large ||
-    "";
-  const title =
-    anime.title?.english || anime.title?.romaji || anime.title?.native || "Untitled";
-
-  return (
-    <div
-      className="w-full bg-cover bg-no-repeat bg-center h-[420px] md:h-[390px] relative"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      {/* Gradient Overlay */}
-      <div className="absolute h-full w-full inset-0 m-auto bg-gradient-to-r from-black via-black/85 to-transparent z-10"></div>
-      <div className="absolute h-full w-full inset-0 m-auto bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-
-      {/* Content Section */}
-      <div className="w-full h-[calc(100%-5.25rem)] relative z-20">
-        <Container className="w-full h-full flex flex-col justify-end md:justify-center pb-10">
-          <div className="space-y-4 lg:w-[44vw]">
-            <h1 className="text-3xl md:text-4xl font-black text-white line-clamp-2">
-              {title}
-            </h1>
-
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              {anime.format && (
-                <Badge className="bg-[#ff850b] text-white font-bold">
-                  {anime.format}
-                </Badge>
-              )}
-              {anime.seasonYear && (
-                <Badge variant="outline" className="text-gray-300 border-gray-600">
-                  {anime.season ? `${anime.season} ` : ""}{anime.seasonYear}
-                </Badge>
-              )}
-              {!!anime.averageScore && (
-                <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-300 border border-yellow-500/40">
-                  ⭐ {anime.averageScore}% Score
-                </Badge>
-              )}
-              {anime.genres?.slice(0, 3).map((g) => (
-                <span key={g} className="text-gray-400 text-xs">
-                  • {g}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-5 !mt-6">
-              <ButtonLink
-                href={`${ROUTES.ANIME_DETAILS}/${anime.id}`}
-                className="h-10 text-md bg-[#ff850b] text-white hover:bg-[#ff850b]"
-              >
-                Watch now
-              </ButtonLink>
-            </div>
-          </div>
-        </Container>
-      </div>
-    </div>
-  );
-};
-
-const LoadingSkeleton = () => {
-  return (
-    <div className="h-[420px] md:h-[390px] w-full relative">
-      <div className="w-full h-[calc(100%-5.25rem)] mt-[5.25rem] relative z-20">
-        <Container className="w-full h-full flex flex-col justify-end md:justify-center pb-10">
-          <div className="space-y-2 lg:w-[40vw]">
-            <div className="h-16 animate-pulse bg-slate-700 w-[75%]"></div>
-            <div className="h-40 animate-pulse w-full bg-slate-700"></div>
-            <div className="flex items-center gap-5">
-              <span className="h-10 w-[7.5rem] animate-pulse bg-slate-700"></span>
-              <span className="h-10 w-[7.5rem] animate-pulse bg-slate-700"></span>
-            </div>
-          </div>
-        </Container>
-      </div>
-      <div className="absolute hidden md:flex items-center gap-5 right-10 bottom-32 z-50 isolate">
-        <span className="h-10 w-10 rounded-full animate-pulse bg-slate-700"></span>
-        <span className="h-10 w-10 rounded-full animate-pulse bg-slate-700"></span>
-      </div>
-    </div>
-  );
-};
-export default HeroSection;
+}
