@@ -25,9 +25,9 @@ const LatestEpisodesAnime = ({ loading: initialLoading }: Props) => {
   }
 
   return (
-    <Container className="flex flex-col gap-5 py-6 items-center lg:items-start lg:mt-0 z-20">
-      <h5 className="text-2xl font-bold text-white">Latest Episodes · New Releases</h5>
-      <div className="grid lg:grid-cols-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 w-full gap-5 content-center">
+    <Container className="flex flex-col gap-5 py-4 items-center lg:items-start lg:mt-0 z-20">
+      <h5 className="border-l-2 border-orange-500 pl-3 text-xl font-extrabold text-white">Latest Episodes · 2026 releases</h5>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 w-full content-center">
         {episodesList.map((anime, idx) => {
           const title =
             anime.title?.english || anime.title?.romaji || anime.title?.native || "Untitled";
