@@ -85,16 +85,16 @@ const NavBar = () => {
           : "bg-black/90 border-white/5",
       ])}
     >
-      <Container className="flex items-center justify-between py-2 gap-20 ">
+      <Container className="!max-w-none flex items-center gap-4 py-3 !px-6">
         <Link
           href={ROUTES.HOME}
-          className="flex items-center gap-1 cursor-pointer"
+          className="flex shrink-0 items-center gap-1 cursor-pointer"
         >
-          <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500 text-xl font-bold text-white">∞</span>
+          <span aria-hidden="true" className="flex h-8 w-9 items-center justify-center text-3xl font-bold text-orange-500">∞</span>
           <h1
             className={cn([
               
-              "text-2xl font-extrabold text-white tracking-tight",
+              "text-xl font-black italic text-white tracking-tight",
             ])}
           >
             Streamly
@@ -108,8 +108,9 @@ const NavBar = () => {
             </Link>
           ))}
         </div>
-        <div className="w-1/3 hidden lg:flex items-center gap-5">
-          <SearchBar />
+        <div className="ml-2 flex-1 hidden lg:flex items-center gap-5">
+          <SearchBar className="!max-w-[250px]" />
+          <div className="ml-auto" />
           {auth.auth ? <NavbarAvatar auth={auth} /> : <LoginPopoverButton />}
         </div>
         <div className="lg:hidden flex items-center gap-5">
