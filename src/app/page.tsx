@@ -61,7 +61,7 @@ export default function Home() {
         isDataLoading={isLoadingSpotlight}
       />
 
-      <div className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8"><div className="mb-7 border-b border-violet-400/15 pb-5"><p className="mb-1 text-xs font-bold uppercase tracking-widest text-violet-400">Discover your next favourite</p><h2 className="text-2xl font-black tracking-tight sm:text-3xl">Explore Anime on Streamly</h2><p className="mt-2 text-sm text-slate-400">Latest episodes, trending series and anime worth watching.</p></div></div>
+      <div className="mx-auto w-full max-w-[1900px] px-4 pt-5 sm:px-6"><div className="rounded border border-orange-500/30 bg-orange-500/5 px-4 py-3 text-xs text-slate-300"><span className="mr-2 text-orange-500">●</span><strong className="text-white">More anime coming soon.</strong> New series and seasons are being added.</div></div>
       <LatestEpisodesAnime loading={isLoadingRecent} />
 
       <ContinueWatching loading={false} />
